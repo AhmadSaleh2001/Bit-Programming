@@ -20,7 +20,7 @@
 
 typedef struct bitmap
 {
-    uint32_t *bit;
+    uint32_t *bits;
     uint16_t tsize; // number of bits
     uint16_t next;
 } bitmap_t;
