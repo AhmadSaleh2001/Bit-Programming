@@ -49,3 +49,4 @@ void print_binary(int x);
 
 uint32_t bit_generate_ones(uint8_t start, uint8_t end);
 bool uint32_bit_compare(uint32_t bit1, uint32_t bit2, uint8_t count);
+bool uint32_bit_compare_v2(uint32_t bit1, uint32_t bit2, uint8_t count);

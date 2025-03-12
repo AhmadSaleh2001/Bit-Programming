@@ -80,11 +80,8 @@ void print_binary(int x) {
 
 uint32_t bit_generate_ones(uint8_t start, uint8_t end) {
     uint32_t ans = 0;
-
-    printf("%d %d\n", start, end);
     start = 31 - start;
     end = 31 - end;
-    printf("%d %d\n", start, end);
 
     for(uint32_t i=end;i<=start;i++) {
         ans|=(1ll<<i);
@@ -101,4 +98,10 @@ bool uint32_bit_compare(uint32_t bit1, uint32_t bit2, uint8_t count) {
         if(b1 != b2)return 0;
     }
     return 1;
+}
+
+bool uint32_bit_compare_v2(uint32_t bit1, uint32_t bit2, uint8_t count) {
+    uint32_t msk = bit_generate_ones(0, count - 1);
+
+    return (bit1&msk) == (bit2&msk);
 }
