@@ -40,19 +40,17 @@ bool bitmap_at(bitmap_t * bitmap, uint16_t index) {
 }
 
 char * bitmap_print(bitmap_t * bitmap) {
-    uint16_t index;
-
     static char buffer[OUTPUT_BUFFER_SIZE];
     memset(buffer, 0, sizeof buffer);
 
     uint16_t buffer_cursor = 0 ;
-
-    for(index = 0;index < bitmap->tsize;index++) {
+    uint16_t index, boolout;
+    BITMAP_ITERATE_BEGIN(bitmap, 0, index, boolout) {
         if(index%8 == 0) {
             buffer_cursor += sprintf(buffer + buffer_cursor, " ");
         }
-        buffer_cursor += sprintf(buffer + buffer_cursor, "%d", bitmap_at(bitmap, index));
-    }
+        buffer_cursor += sprintf(buffer + buffer_cursor, "%d", boolout);
+    } BITMAP_ITERATE_END(bitmap, 0, index, boolout)
 
     return buffer;
 }
@@ -70,7 +68,6 @@ void copy(
     src_value>>=(32 - (src_start_pos + count));
     src_value<<=(32 - (src_start_pos + count));
     src_value<<=src_start_pos;
-    // src_value>>=dst_start_pos;
     *dst = htonl(src_value);
 }
 

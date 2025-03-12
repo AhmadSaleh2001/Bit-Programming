@@ -18,6 +18,12 @@
 #define UNSET_BIT8(n, pos) (n &= (~(pos & 0xFF)))
 #define SET_BIT(n, pos) (n |= pos)
 
+#define BITMAP_ITERATE_BEGIN(bitmap_ptr, start_index, _index, boolout) \
+    for(_index = start_index;_index < bitmap_ptr->tsize;_index++) { \
+        boolout = bitmap_at(bitmap_ptr, _index);
+
+#define BITMAP_ITERATE_END(bitmap_ptr, start_index, _index, boolout) }
+
 typedef struct bitmap
 {
     uint32_t *bits;
