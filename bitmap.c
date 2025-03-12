@@ -77,3 +77,28 @@ void print_binary(int x) {
     }
     printf("\n");
 }
+
+uint32_t bit_generate_ones(uint8_t start, uint8_t end) {
+    uint32_t ans = 0;
+
+    printf("%d %d\n", start, end);
+    start = 31 - start;
+    end = 31 - end;
+    printf("%d %d\n", start, end);
+
+    for(uint32_t i=end;i<=start;i++) {
+        ans|=(1ll<<i);
+    }
+
+    return ans;
+}
+
+bool uint32_bit_compare(uint32_t bit1, uint32_t bit2, uint8_t count) {
+    int until = 32 - count;
+    for(uint8_t i=31;i>=until;i--) {
+        bool b1 = (bit1>>i)&1;
+        bool b2 = (bit2>>i)&1;
+        if(b1 != b2)return 0;
+    }
+    return 1;
+}
