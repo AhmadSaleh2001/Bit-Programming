@@ -56,3 +56,27 @@ char * bitmap_print(bitmap_t * bitmap) {
 
     return buffer;
 }
+
+// Endian indepened code functions
+
+void copy(
+    uint32_t * src, 
+    uint32_t * dst, 
+    int src_start_pos, 
+    int dst_start_pos, 
+    int count) {
+
+    uint32_t src_value = htonl(*src);
+    src_value>>=(32 - (src_start_pos + count));
+    src_value<<=(32 - (src_start_pos + count));
+    src_value<<=src_start_pos;
+    // src_value>>=dst_start_pos;
+    *dst = htonl(src_value);
+}
+
+void print_binary(int x) {
+    for(int i=31;i>=0;i--) {
+        printf("%d", (x>>i)&1);
+    }
+    printf("\n");
+}

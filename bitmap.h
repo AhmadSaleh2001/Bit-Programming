@@ -32,3 +32,11 @@ void bitmap_unset_bit_at(bitmap_t * bitmap, uint16_t index);
 bool bitmap_at(bitmap_t * bitmap, uint16_t index);
 
 char * bitmap_print(bitmap_t * bitmap);
+
+void copy(uint32_t * src, uint32_t * dst, int src_start_pos, int dst_start_pos, int count);
+
+// Endian indepened code functions
+
+void endian_independent_bitmap_set_bit_at(bitmap_t * bitmap, uint16_t index);
+
+void print_binary(int x);
