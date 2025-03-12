@@ -24,6 +24,27 @@
 
 #define BITMAP_ITERATE_END(bitmap_ptr, start_index, _index, boolout) }
 
+static inline uint32_t
+LSHIFT(uint32_t N, uint16_t n)
+{
+  if (n == 32)
+    return 0;
+ 
+  N <<= n;
+  return N;
+}
+ 
+static inline uint32_t
+ 
+RSHIFT(uint32_t N, uint16_t n)
+{
+  if (n == 32)
+    return 0;
+ 
+  N >>= n;
+  return N;
+}
+
 typedef struct bitmap
 {
     uint32_t *bits;
