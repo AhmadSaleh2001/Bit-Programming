@@ -66,8 +66,11 @@ void copy(uint32_t * src, uint32_t * dst, int src_start_pos, int dst_start_pos, 
 
 void endian_independent_bitmap_set_bit_at(bitmap_t * bitmap, uint16_t index);
 
-void print_binary(int x);
+void print_binary(uint32_t x);
 
 uint32_t bit_generate_ones(uint8_t start, uint8_t end);
 bool uint32_bit_compare(uint32_t bit1, uint32_t bit2, uint8_t count);
 bool uint32_bit_compare_v2(uint32_t bit1, uint32_t bit2, uint8_t count);
+
+void bitmap_lshift32(bitmap_t * bitmap, uint16_t count);
+void bitmap_rshift32(bitmap_t * bitmap, uint16_t count);

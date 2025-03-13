@@ -4,21 +4,22 @@
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <inttypes.h>
 
 void bitmap_init(bitmap_t * bitmap, uint16_t tsize) {
-    assert((tsize%sizeof(uint32_t)) == 0);
-    uint16_t number_of_chunks = tsize / sizeof(uint32_t);
-    bitmap->bits = calloc(number_of_chunks, sizeof(uint32_t));
+    assert((tsize%32) == 0);
+    uint16_t number_of_chunks = tsize / 32;
+    bitmap->bits = calloc(number_of_chunks, 32);
     bitmap->tsize = tsize;
     bitmap->next = 0; // zero meaning NULL
 }
 
 int get_chunk_index(int bit_index) {
-    return bit_index / sizeof(uint32_t);
+    return bit_index / 32;
 }
 
 int get_bit_index_in_chunk(int bit_index) {
-    return sizeof(uint32_t) - (bit_index % sizeof(uint32_t));
+    return 31 - (bit_index % 32);
 }
 
 void bitmap_set_bit_at(bitmap_t * bitmap, uint16_t index) {
@@ -71,7 +72,7 @@ void copy(
     *dst = htonl(src_value);
 }
 
-void print_binary(int x) {
+void print_binary(uint32_t x) {
     for(int i=31;i>=0;i--) {
         printf("%d", (x>>i)&1);
     }
@@ -104,4 +105,33 @@ bool uint32_bit_compare_v2(uint32_t bit1, uint32_t bit2, uint8_t count) {
     uint32_t msk = bit_generate_ones(0, count - 1);
 
     return (bit1&msk) == (bit2&msk);
+}
+
+void bitmap_lshift32(bitmap_t * bitmap, uint16_t count) {
+    assert(count >= 0 && count <= 32);
+    int cnt = 0;
+    int end = bitmap->tsize/32;
+    while(cnt < end - 1) {
+        uint32_t currVal = bitmap->bits[cnt];
+        currVal<<=count;
+        uint32_t nextVal = bitmap->bits[cnt + 1];
+        nextVal>>=(32 - count);
+        bitmap->bits[cnt] = currVal | nextVal;
+        cnt++;
+    }
+    bitmap->bits[cnt]<<=count;
+}
+
+void bitmap_rshift32(bitmap_t * bitmap, uint16_t count) {
+    assert(count >= 0 && count <= 32);
+    int cnt = bitmap->tsize/32 - 1;
+    while(cnt > 0) {
+        uint32_t currVal = bitmap->bits[cnt];
+        currVal>>=count;
+        uint32_t nextVal = bitmap->bits[cnt - 1];
+        nextVal<<=(32 - count);
+        bitmap->bits[cnt] = currVal | nextVal;
+        cnt--;
+    }
+    bitmap->bits[0]>>=count;
 }
