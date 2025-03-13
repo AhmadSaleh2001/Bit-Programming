@@ -86,9 +86,8 @@ uint32_t bit_generate_ones(uint8_t start, uint8_t end) {
     end = 31 - end;
 
     for(uint32_t i=end;i<=start;i++) {
-        ans|=(1ll<<i);
+        ans|=((uint32_t)1<<i);
     }
-
     return ans;
 }
 
@@ -104,7 +103,6 @@ bool uint32_bit_compare(uint32_t bit1, uint32_t bit2, uint8_t count) {
 
 bool uint32_bit_compare_v2(uint32_t bit1, uint32_t bit2, uint8_t count) {
     uint32_t msk = bit_generate_ones(0, count - 1);
-
     return (bit1&msk) == (bit2&msk);
 }
 
@@ -158,4 +156,18 @@ void bitmap_copy(bitmap_t * src, bitmap_t * dst, uint16_t start_index, uint16_t 
         bitmap_lshift32(dst, mn);
         toBeLeftShift-=mn;
     }
+}
+
+bool bitmap_compare(bitmap_t * src, bitmap_t * dst, uint16_t count) {
+    assert(src->tsize == dst->tsize);
+    assert(src->tsize >= count);
+    int cnt = 0 ;
+    while(count > 0) {
+        int mn = count > 32 ? 32 : count;
+        count-=mn;
+        if(!uint32_bit_compare_v2(src->bits[cnt], dst->bits[cnt], mn))return 0;
+        cnt++;
+    }
+
+    return 1;
 }

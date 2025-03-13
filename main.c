@@ -24,11 +24,13 @@ int main() {
     bitmap_t *bitmap_cpy = malloc(sizeof(bitmap));
     bitmap_init(bitmap_cpy, 64);
 
-    bitmap_copy(bitmap, bitmap_cpy, 24, 16);
+    bitmap_copy(bitmap, bitmap_cpy, 0, 16);
 
 
     char * copied_bitmap_buffer = bitmap_print(bitmap_cpy);
     printf("copied bitmap: %s\n", copied_bitmap_buffer);
+
+    printf("compare result: %d\n", bitmap_compare(bitmap, bitmap_cpy, 40));
 
     // uint32_t x1 = bit_generate_ones(2, 10);
     // print_binary(x1);
