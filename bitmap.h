@@ -74,3 +74,5 @@ bool uint32_bit_compare_v2(uint32_t bit1, uint32_t bit2, uint8_t count);
 
 void bitmap_lshift32(bitmap_t * bitmap, uint16_t count);
 void bitmap_rshift32(bitmap_t * bitmap, uint16_t count);
+
+void bitmap_copy(bitmap_t * src, bitmap_t * dst, uint16_t start_index, uint16_t count);

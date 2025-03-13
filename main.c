@@ -21,6 +21,15 @@ int main() {
     char * buffer2 = bitmap_print(bitmap);
     printf("bitmap: %s\n", buffer2);
 
+    bitmap_t *bitmap_cpy = malloc(sizeof(bitmap));
+    bitmap_init(bitmap_cpy, 64);
+
+    bitmap_copy(bitmap, bitmap_cpy, 24, 16);
+
+
+    char * copied_bitmap_buffer = bitmap_print(bitmap_cpy);
+    printf("copied bitmap: %s\n", copied_bitmap_buffer);
+
     // uint32_t x1 = bit_generate_ones(2, 10);
     // print_binary(x1);
 

@@ -69,6 +69,7 @@ void copy(
     src_value>>=(32 - (src_start_pos + count));
     src_value<<=(32 - (src_start_pos + count));
     src_value<<=src_start_pos;
+    src_value>>=dst_start_pos;
     *dst = htonl(src_value);
 }
 
@@ -108,7 +109,7 @@ bool uint32_bit_compare_v2(uint32_t bit1, uint32_t bit2, uint8_t count) {
 }
 
 void bitmap_lshift32(bitmap_t * bitmap, uint16_t count) {
-    assert(count >= 0 && count <= 32);
+    assert(count >= 0 && count <= 31);
     int cnt = 0;
     int end = bitmap->tsize/32;
     while(cnt < end - 1) {
@@ -123,7 +124,7 @@ void bitmap_lshift32(bitmap_t * bitmap, uint16_t count) {
 }
 
 void bitmap_rshift32(bitmap_t * bitmap, uint16_t count) {
-    assert(count >= 0 && count <= 32);
+    assert(count >= 0 && count <= 31);
     int cnt = bitmap->tsize/32 - 1;
     while(cnt > 0) {
         uint32_t currVal = bitmap->bits[cnt];
@@ -134,4 +135,27 @@ void bitmap_rshift32(bitmap_t * bitmap, uint16_t count) {
         cnt--;
     }
     bitmap->bits[0]>>=count;
+}
+
+void bitmap_copy(bitmap_t * src, bitmap_t * dst, uint16_t start_index, uint16_t count) {
+    assert(src->tsize == dst->tsize);
+    int end = src->tsize/32;
+    for(int i=0;i<end;i++) {
+        dst->bits[i] = src->bits[i];
+    }
+    
+    int toBeRightShift = dst->tsize - (start_index + count);
+    int toBeLeftShift = start_index + toBeRightShift;
+
+    while(toBeRightShift > 0) {
+        int mn = toBeRightShift > 31 ? 31 : toBeRightShift;
+        bitmap_rshift32(dst, mn);
+        toBeRightShift-=mn;
+    }
+
+    while(toBeLeftShift > 0) {
+        int mn = toBeLeftShift > 31 ? 31 : toBeLeftShift;
+        bitmap_lshift32(dst, mn);
+        toBeLeftShift-=mn;
+    }
 }
