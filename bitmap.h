@@ -101,3 +101,6 @@ bool prefix32bit_match(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8
 bool prefix32bit_match_enhance(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8_t prefix_len);
 void prefix32bit_apply_mask(uint32_t *input, uint32_t mask, uint8_t mask_len);
 void bitmap_inverse(bitmap_t *bitmap, uint16_t count);
+
+void bitmap_swap_bits(bitmap_t *bitmap, uint16_t pos1, uint16_t pos2);
+void bitmap_reverse (bitmap_t *bitmap, uint16_t count);

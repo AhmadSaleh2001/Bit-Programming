@@ -22,13 +22,32 @@ int get_bit_index_in_chunk(int bit_index) {
     return 31 - (bit_index % 32);
 }
 
+void resize_bitmap(bitmap_t * bitmap, int index) {
+    // get closest size divisble by 32 from index
+    int new_number_of_chunks = (((index + 1) + 31) / 32);
+    int new_size = new_number_of_chunks*8;
+    bitmap_t * new_bitmap;
+    bitmap_init(new_bitmap, new_size);
+    for(int i=0;i<bitmap->tsize/8;i++) {
+        new_bitmap->bits[i] = bitmap->bits[i];
+    }
+    bitmap->bits = new_size;
+    bitmap->next = 0;
+}
+
 void bitmap_set_bit_at(bitmap_t * bitmap, uint16_t index) {
+    if(index >= bitmap->tsize) {
+        resize_bitmap(bitmap, index);
+    }
     int chunk_index = get_chunk_index(index);
     int bit_index_in_chunk = get_bit_index_in_chunk(index);
     SET_BIT(bitmap->bits[chunk_index], 1<<bit_index_in_chunk);
 }
 
 void bitmap_unset_bit_at(bitmap_t * bitmap, uint16_t index) {
+    if(index >= bitmap->tsize) {
+        resize_bitmap(bitmap, index);
+    }
     int chunk_index = get_chunk_index(index);
     int bit_index_in_chunk = get_bit_index_in_chunk(index);
     UNSET_BIT32(bitmap->bits[chunk_index], 1<<bit_index_in_chunk);
@@ -261,5 +280,23 @@ void bitmap_inverse(bitmap_t *bitmap, uint16_t count) {
         }
         count-=mn;
         idx++;
+    }
+}
+
+void bitmap_swap_bits(bitmap_t *bitmap, uint16_t pos1, uint16_t pos2) {
+    bool b1 = bitmap_at(bitmap, pos1);
+    bool b2 = bitmap_at(bitmap, pos2);
+
+    if(b1)bitmap_set_bit_at(bitmap, pos2);
+    else bitmap_unset_bit_at(bitmap, pos2);
+
+    if(b2)bitmap_set_bit_at(bitmap, pos1);
+    else bitmap_unset_bit_at(bitmap, pos1);
+}
+
+void bitmap_reverse(bitmap_t *bitmap, uint16_t count) {
+    int l = 0, r = count - 1;
+    while(r > l) {
+        bitmap_swap_bits(bitmap, l++, r--);
     }
 }

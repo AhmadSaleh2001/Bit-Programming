@@ -15,12 +15,19 @@ int main() {
 
     char * buffer1 = bitmap_print(bitmap);
     printf("bitmap: %s\n", buffer1);
+
+    bitmap_reverse(bitmap, 16);
+    printf("after reverse bitmap: %s\n", bitmap_print(bitmap));
+    bitmap_reverse(bitmap, 16);
+    
+    bitmap_swap_bits(bitmap, 0, 62);
+    printf("after swap bitmap: %s\n", bitmap_print(bitmap));
+
+    bitmap_swap_bits(bitmap, 0, 62);
+
     bitmap_inverse(bitmap, 18);
     printf("inverse bitmap: %s\n", bitmap_print(bitmap));
     bitmap_inverse(bitmap, 18);
-
-
-    return 0;
 
     printf("\n");
     bitmap_rshift32(bitmap, 2);
