@@ -45,6 +45,12 @@ RSHIFT(uint32_t N, uint16_t n)
   return N;
 }
 
+typedef enum {
+  ZERO,
+  ONE,
+  DONT_CARE
+} bitmap_type_t;
+
 typedef struct bitmap
 {
     uint32_t *bits;
@@ -78,3 +84,5 @@ void bitmap_rshift32(bitmap_t * bitmap, uint16_t count);
 void bitmap_copy(bitmap_t * src, bitmap_t * dst, uint16_t start_index, uint16_t count);
 
 bool bitmap_compare(bitmap_t * src, bitmap_t * dst, uint16_t count);
+
+bitmap_type_t bitmap_effective_bit_at(bitmap_t * bitmap, bitmap_t * wildcard, uint16_t pos);

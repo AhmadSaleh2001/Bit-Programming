@@ -2,7 +2,7 @@
 
 int main() {
 
-    bitmap_t *bitmap = malloc(sizeof(bitmap));
+    bitmap_t *bitmap = malloc(sizeof(bitmap_t));
     bitmap_init(bitmap, 64);
     bitmap_set_bit_at(bitmap, 0);
     bitmap_set_bit_at(bitmap, 3);
@@ -31,6 +31,14 @@ int main() {
     printf("copied bitmap: %s\n", copied_bitmap_buffer);
 
     printf("compare result: %d\n", bitmap_compare(bitmap, bitmap_cpy, 40));
+
+    bitmap_t *wildcard = malloc(sizeof(bitmap_t));
+    bitmap_init(wildcard, 64);
+    bitmap_set_bit_at(wildcard, 0);
+    bitmap_set_bit_at(wildcard, 1);
+    printf("effective bit at 0: %d\n", bitmap_effective_bit_at(bitmap, wildcard, 0));
+    printf("effective bit at 2: %d\n", bitmap_effective_bit_at(bitmap, wildcard, 2));
+    printf("effective bit at 3: %d\n", bitmap_effective_bit_at(bitmap, wildcard, 3));
 
     // uint32_t x1 = bit_generate_ones(2, 10);
     // print_binary(x1);

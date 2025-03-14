@@ -171,3 +171,9 @@ bool bitmap_compare(bitmap_t * src, bitmap_t * dst, uint16_t count) {
 
     return 1;
 }
+
+bitmap_type_t bitmap_effective_bit_at(bitmap_t * bitmap, bitmap_t * wildcard, uint16_t pos) {
+    if(bitmap_at(wildcard, pos))return DONT_CARE;
+    if(bitmap_at(bitmap, pos))return ONE;
+    return ZERO;
+}
