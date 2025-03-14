@@ -24,15 +24,15 @@ int get_bit_index_in_chunk(int bit_index) {
 
 void resize_bitmap(bitmap_t * bitmap, int index) {
     // get closest size divisble by 32 from index
-    int new_number_of_chunks = (((index + 1) + 31) / 32);
-    int new_size = new_number_of_chunks*8;
-    bitmap_t * new_bitmap;
+    uint16_t new_number_of_chunks = (((index + 1) + 31) / 32);
+    uint16_t new_size = new_number_of_chunks*32;
+    bitmap_t * new_bitmap = malloc(sizeof(bitmap_t));
     bitmap_init(new_bitmap, new_size);
-    for(int i=0;i<bitmap->tsize/8;i++) {
+    for(int i=0;i<bitmap->tsize/32;i++) {
         new_bitmap->bits[i] = bitmap->bits[i];
     }
-    bitmap->bits = new_size;
-    bitmap->next = 0;
+    bitmap->bits = new_bitmap->bits;
+    bitmap->tsize = new_size;
 }
 
 void bitmap_set_bit_at(bitmap_t * bitmap, uint16_t index) {
@@ -299,4 +299,8 @@ void bitmap_reverse(bitmap_t *bitmap, uint16_t count) {
     while(r > l) {
         bitmap_swap_bits(bitmap, l++, r--);
     }
+}
+
+bitmap_t * GI_to_bitmap(char * giant_integer, uint16_t number_of_digits) {
+    return NULL;
 }

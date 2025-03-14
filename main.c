@@ -3,7 +3,14 @@
 int main() {
 
     bitmap_t *bitmap = malloc(sizeof(bitmap_t));
-    bitmap_init(bitmap, 64);
+    bitmap_init(bitmap, 32);
+
+    bitmap_set_bit_at(bitmap, 40);
+
+    printf("bitmap: %s\n", bitmap_print(bitmap));
+
+    return 0;
+
     bitmap_set_bit_at(bitmap, 0);
     bitmap_set_bit_at(bitmap, 3);
     bitmap_set_bit_at(bitmap, 8);
