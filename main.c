@@ -40,6 +40,8 @@ int main() {
     printf("effective bit at 2: %d\n", bitmap_effective_bit_at(bitmap, wildcard, 2));
     printf("effective bit at 3: %d\n", bitmap_effective_bit_at(bitmap, wildcard, 3));
 
+    printf("effective bitmap: %s\n", bitmap_effective_print(bitmap, wildcard));
+
     // uint32_t x1 = bit_generate_ones(2, 10);
     // print_binary(x1);
 

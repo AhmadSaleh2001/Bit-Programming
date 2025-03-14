@@ -56,6 +56,23 @@ char * bitmap_print(bitmap_t * bitmap) {
     return buffer;
 }
 
+char * bitmap_effective_print(bitmap_t * bitmap, bitmap_t * wildcard) {
+    static char buffer[OUTPUT_BUFFER_SIZE];
+    memset(buffer, 0, sizeof buffer);
+
+    uint16_t buffer_cursor = 0 ;
+    uint16_t index;
+    bitmap_type_t effective_bit_output;
+    BITMAP_EFFECTIVE_ITERATE_BEGIN(bitmap, wildcard, 0, index, effective_bit_output) {
+        if(index%8 == 0) {
+            buffer_cursor += sprintf(buffer + buffer_cursor, " ");
+        }
+        buffer_cursor += sprintf(buffer + buffer_cursor, "%d", effective_bit_output);
+    } BITMAP_EFFECTIVE_ITERATE_END(bitmap, wildcard, 0, index, effective_bit_output)
+
+    return buffer;
+}
+
 // Endian indepened code functions
 
 void copy(

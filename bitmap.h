@@ -24,6 +24,12 @@
 
 #define BITMAP_ITERATE_END(bitmap_ptr, start_index, _index, boolout) }
 
+#define BITMAP_EFFECTIVE_ITERATE_BEGIN(bitmap_ptr, wilcard_ptr, start_index, _index, effective_bit_output) \
+    for(_index = start_index;_index < bitmap_ptr->tsize;_index++) { \
+        effective_bit_output = bitmap_effective_bit_at(bitmap_ptr, wilcard_ptr, _index);
+
+#define BITMAP_EFFECTIVE_ITERATE_END(bitmap_ptr, wilcard_ptr, start_index, _index, effective_bit_output) }
+
 static inline uint32_t
 LSHIFT(uint32_t N, uint16_t n)
 {
@@ -65,6 +71,7 @@ void bitmap_unset_bit_at(bitmap_t * bitmap, uint16_t index);
 bool bitmap_at(bitmap_t * bitmap, uint16_t index);
 
 char * bitmap_print(bitmap_t * bitmap);
+char * bitmap_effective_print(bitmap_t * bitmap, bitmap_t * wildcard);
 
 void copy(uint32_t * src, uint32_t * dst, int src_start_pos, int dst_start_pos, int count);
 
