@@ -205,10 +205,6 @@ bool prefix32bit_match(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8
     prefix = htonl(prefix);
     wildcard = htonl(wildcard);
 
-    print_binary(input);
-    print_binary(prefix);
-    print_binary(wildcard);
-
     for(int i=31;i>=32 - prefix_len;i--) {
         uint32_t position = 1ll<<i;
         if(IS_BIT_SET(wildcard, position))continue;
@@ -223,14 +219,47 @@ bool prefix32bit_match_enhance(uint32_t input, uint32_t prefix, uint32_t wildcar
     prefix = htonl(prefix);
     wildcard = htonl(wildcard);
 
-    print_binary(input);
-    print_binary(prefix);
-    print_binary(wildcard);
-
     uint32_t msk = bit_generate_ones(0, prefix_len - 1);
     print_binary(msk);
     msk = msk & (~wildcard);
     print_binary(msk);
 
     return (input&msk) == (prefix&msk);
+}
+
+void prefix32bit_apply_mask(uint32_t *input, uint32_t mask, uint8_t mask_len) {
+    uint32_t endian_independent_input = htonl(*input);
+    uint32_t endian_independent_mask = htonl(mask);
+
+    uint32_t bitmask = bit_generate_ones(0, mask_len - 1);
+    endian_independent_mask&=bitmask;
+
+    uint32_t answer = endian_independent_mask & endian_independent_input;
+
+    *input = htonl(answer);
+}
+
+void bitmap_inverse(bitmap_t *bitmap, uint16_t count) {
+    assert(bitmap->tsize >= count);
+    int idx = 0;
+    while(count > 0) {
+        int mn = count > 32 ? 32 : count;
+        if(mn == 32) {
+            bitmap->bits[idx] = ~bitmap->bits[idx];
+        } else {
+            uint32_t val = bitmap->bits[idx];
+            val = ~val;
+            val>>=32 - count;
+            val<<=32 - count;
+
+            bitmap->bits[idx]<<=count;
+            bitmap->bits[idx]>>=count;
+
+            bitmap->bits[idx]|=val;
+
+            break;
+        }
+        count-=mn;
+        idx++;
+    }
 }

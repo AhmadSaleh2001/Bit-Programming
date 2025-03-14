@@ -15,6 +15,12 @@ int main() {
 
     char * buffer1 = bitmap_print(bitmap);
     printf("bitmap: %s\n", buffer1);
+    bitmap_inverse(bitmap, 18);
+    printf("inverse bitmap: %s\n", bitmap_print(bitmap));
+    bitmap_inverse(bitmap, 18);
+
+
+    return 0;
 
     printf("\n");
     bitmap_rshift32(bitmap, 2);
@@ -49,6 +55,9 @@ int main() {
     printf("prefix match result: %d\n", prefix32bit_match(input_val, prefix_val, wildcard_val, 8));
     printf("enhance prefix match result: %d\n", prefix32bit_match_enhance(input_val, prefix_val, wildcard_val, 8));
 
+    uint32_t msk = 0b1111111;
+    prefix32bit_apply_mask(&input_val, msk, 4);
+    print_binary(input_val);
 
     return 0;
 }
