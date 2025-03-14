@@ -71,7 +71,7 @@ void bitmap_unset_bit_at(bitmap_t * bitmap, uint16_t index);
 bool bitmap_at(bitmap_t * bitmap, uint16_t index);
 
 char * bitmap_print(bitmap_t * bitmap);
-char * bitmap_effective_print(bitmap_t * bitmap, bitmap_t * wildcard);
+void bitmap_effective_print(bitmap_t * bitmap, bitmap_t * wildcard);
 
 void copy(uint32_t * src, uint32_t * dst, int src_start_pos, int dst_start_pos, int count);
 

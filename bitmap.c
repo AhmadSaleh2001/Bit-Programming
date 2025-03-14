@@ -56,7 +56,7 @@ char * bitmap_print(bitmap_t * bitmap) {
     return buffer;
 }
 
-char * bitmap_effective_print(bitmap_t * bitmap, bitmap_t * wildcard) {
+void bitmap_effective_print(bitmap_t * bitmap, bitmap_t * wildcard) {
     static char buffer[OUTPUT_BUFFER_SIZE];
     memset(buffer, 0, sizeof buffer);
 
@@ -67,10 +67,15 @@ char * bitmap_effective_print(bitmap_t * bitmap, bitmap_t * wildcard) {
         if(index%8 == 0) {
             buffer_cursor += sprintf(buffer + buffer_cursor, " ");
         }
-        buffer_cursor += sprintf(buffer + buffer_cursor, "%d", effective_bit_output);
+        char actualChar = 'X';
+        if(effective_bit_output == ONE)actualChar = '1';
+        else if(effective_bit_output == ZERO)actualChar = '0';
+        buffer_cursor += sprintf(buffer + buffer_cursor, "%c", actualChar);
     } BITMAP_EFFECTIVE_ITERATE_END(bitmap, wildcard, 0, index, effective_bit_output)
 
-    return buffer;
+    printf("effective bitmap: %s\n", buffer);
+    printf("bitmap: %s\n", bitmap_print(bitmap));
+    printf("wildcard: %s\n", bitmap_print(wildcard));
 }
 
 // Endian indepened code functions
