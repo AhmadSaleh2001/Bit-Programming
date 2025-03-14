@@ -93,3 +93,8 @@ void bitmap_copy(bitmap_t * src, bitmap_t * dst, uint16_t start_index, uint16_t 
 bool bitmap_compare(bitmap_t * src, bitmap_t * dst, uint16_t count);
 
 bitmap_type_t bitmap_effective_bit_at(bitmap_t * bitmap, bitmap_t * wildcard, uint16_t pos);
+
+
+// mask: when we have 0, meaning dont care
+// wildcard: when we have 1, meaning dont care
+bool prefix32bit_match(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8_t prefix_len);

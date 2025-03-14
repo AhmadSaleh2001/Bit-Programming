@@ -199,3 +199,17 @@ bitmap_type_t bitmap_effective_bit_at(bitmap_t * bitmap, bitmap_t * wildcard, ui
     if(bitmap_at(bitmap, pos))return ONE;
     return ZERO;
 }
+
+bool prefix32bit_match(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8_t prefix_len) {
+    input = htonl(input);
+    prefix = htonl(prefix);
+    wildcard = htonl(wildcard);
+
+    for(uint32_t i=0;i<prefix_len;i++) {
+        uint32_t position = 1<<i;
+        if(IS_BIT_SET(wildcard, position))continue;
+        if(IS_BIT_SET(input, position) != IS_BIT_SET(prefix, position))return 0;
+    }
+
+    return 1;
+}

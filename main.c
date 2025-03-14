@@ -42,14 +42,12 @@ int main() {
 
     bitmap_effective_print(bitmap, wildcard);
 
-    // uint32_t x1 = bit_generate_ones(2, 10);
-    // print_binary(x1);
+    uint32_t input_val = 0xAFBBCCDD;
+    uint32_t prefix_val = 0xAABBCCDD;
+    uint32_t wildcard_val = 0b1111;
 
-    // uint32_t x2 = bit_generate_ones(2, 12);
-    // print_binary(x2);
+    printf("prefix match result: %d\n", prefix32bit_match(input_val, prefix_val, wildcard_val, 1));
 
-    // printf("compare: %d\n", uint32_bit_compare(x1, x2, 5));
-    // printf("compare: %d\n", uint32_bit_compare_v2(x1, x2, 5));
 
     return 0;
 }
