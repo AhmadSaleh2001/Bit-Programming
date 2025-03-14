@@ -98,3 +98,4 @@ bitmap_type_t bitmap_effective_bit_at(bitmap_t * bitmap, bitmap_t * wildcard, ui
 // mask: when we have 0, meaning dont care
 // wildcard: when we have 1, meaning dont care
 bool prefix32bit_match(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8_t prefix_len);
+bool prefix32bit_match_enhance(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8_t prefix_len);

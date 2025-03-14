@@ -42,11 +42,12 @@ int main() {
 
     bitmap_effective_print(bitmap, wildcard);
 
-    uint32_t input_val = 0xAFBBCCDD;
-    uint32_t prefix_val = 0xAABBCCDD;
+    uint32_t input_val = 0xAABBCCDD;
+    uint32_t prefix_val = 0xBABBCCDD;
     uint32_t wildcard_val = 0b1111;
 
-    printf("prefix match result: %d\n", prefix32bit_match(input_val, prefix_val, wildcard_val, 1));
+    printf("prefix match result: %d\n", prefix32bit_match(input_val, prefix_val, wildcard_val, 8));
+    printf("enhance prefix match result: %d\n", prefix32bit_match_enhance(input_val, prefix_val, wildcard_val, 8));
 
 
     return 0;

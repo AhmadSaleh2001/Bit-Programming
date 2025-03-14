@@ -205,11 +205,32 @@ bool prefix32bit_match(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8
     prefix = htonl(prefix);
     wildcard = htonl(wildcard);
 
-    for(uint32_t i=0;i<prefix_len;i++) {
-        uint32_t position = 1<<i;
+    print_binary(input);
+    print_binary(prefix);
+    print_binary(wildcard);
+
+    for(int i=31;i>=32 - prefix_len;i--) {
+        uint32_t position = 1ll<<i;
         if(IS_BIT_SET(wildcard, position))continue;
         if(IS_BIT_SET(input, position) != IS_BIT_SET(prefix, position))return 0;
     }
 
     return 1;
+}
+
+bool prefix32bit_match_enhance(uint32_t input, uint32_t prefix, uint32_t wildcard, uint8_t prefix_len) {
+    input = htonl(input);
+    prefix = htonl(prefix);
+    wildcard = htonl(wildcard);
+
+    print_binary(input);
+    print_binary(prefix);
+    print_binary(wildcard);
+
+    uint32_t msk = bit_generate_ones(0, prefix_len - 1);
+    print_binary(msk);
+    msk = msk & (~wildcard);
+    print_binary(msk);
+
+    return (input&msk) == (prefix&msk);
 }
