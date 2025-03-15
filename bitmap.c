@@ -349,3 +349,73 @@ bitmap_t * GI_to_bitmap(char * giant_integer, uint16_t number_of_digits) {
 
     return b;
 }
+
+char * multiply_by_2(char * decimal_number, int * len) {
+    char * answer_decimal_number = strdup(decimal_number);
+    bool carry = 0;
+    int i;
+    for(i=0;i<*len;i++) {
+        int d = answer_decimal_number[i] - '0';
+        d = d*2 + carry;
+        
+        answer_decimal_number[i] = (d%10) + '0';
+        carry = d >= 10;
+    }
+
+    if(carry) {
+        *len+=10;
+        answer_decimal_number = realloc(answer_decimal_number, *len * sizeof(char));
+        for(int j=i;j<*len;j++)answer_decimal_number[j] = '0';
+        answer_decimal_number[i] = '1';
+    }
+
+    return answer_decimal_number;
+}
+
+char * add_one(char * decimal_number, int * len) {
+    char * answer_decimal_number = strdup(decimal_number);
+    bool carry = 1;
+    int i;
+    for(i=0;i<*len;i++) {
+        int d = answer_decimal_number[i] - '0';
+        d = d + carry;
+        
+        answer_decimal_number[i] = (d%10) + '0';
+        carry = d >= 10;
+    }
+
+    if(carry) {
+        *len+=10;
+        answer_decimal_number = realloc(answer_decimal_number, *len * sizeof(char));
+        for(int j=i;j<*len;j++)answer_decimal_number[j] = '0';
+        answer_decimal_number[i] = '1';
+    }
+
+    return answer_decimal_number;
+}
+
+char * bitmap_to_GI(bitmap_t * bitmap, int * output_len) {
+    int index = 0;
+    bool output;
+
+    *output_len = 10;
+    char * decimal_number = malloc(10 * sizeof(char));
+    for(int i=0;i<*output_len;i++)decimal_number[i] = '0';
+
+    BITMAP_ITERATE_BEGIN(bitmap, 0, index, output) {
+        decimal_number = multiply_by_2(decimal_number, output_len);
+        if(output) {
+            decimal_number = add_one(decimal_number, output_len);
+        }
+    } BITMAP_ITERATE_END(bitmap, 0, index, output)
+
+    int left = 0, right = *output_len - 1;
+    while(right >= left) {
+        char t = decimal_number[left];
+        decimal_number[left] = decimal_number[right];
+        decimal_number[right] = t;
+        left++, right--;
+    }
+
+    return decimal_number;
+}

@@ -11,7 +11,12 @@ int main() {
 
     char * giant_integer = "1234567899999";
     int len = 13;
-    printf("bitmap after converting giant integer: %s\n", bitmap_print(GI_to_bitmap(giant_integer, len)));
+    bitmap_t * gi_bitmap = GI_to_bitmap(giant_integer, len);
+    printf("bitmap after converting giant integer: %s\n", bitmap_print(gi_bitmap));
+
+    int decimal_number_len = 0;
+    char * restore_decimal = bitmap_to_GI(gi_bitmap, &decimal_number_len);
+    printf("decimal: %s\n", restore_decimal);
 
     bitmap_set_bit_at(bitmap, 0);
     bitmap_set_bit_at(bitmap, 3);

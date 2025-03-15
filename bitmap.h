@@ -106,3 +106,7 @@ void bitmap_swap_bits(bitmap_t *bitmap, uint16_t pos1, uint16_t pos2);
 void bitmap_reverse (bitmap_t *bitmap, uint16_t count);
 
 bitmap_t * GI_to_bitmap(char * giant_integer, uint16_t number_of_digits);
+char * bitmap_to_GI(bitmap_t * bitmap, int * output_len);
+
+
+char * multiply_by_2(char * decimal_number, int * len);
