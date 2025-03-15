@@ -19,5 +19,5 @@ This project provides a set of functions to manipulate and work with bitmaps in 
 typedef struct bitmap {
     uint32_t *bits;  // Pointer to the bitmap data
     uint16_t tsize;  // Total number of bits in the bitmap
-    uint16_t next;   // Index for the next available bit
+    uint16_t next;   // Not used
 } bitmap_t;
