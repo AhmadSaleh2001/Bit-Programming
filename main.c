@@ -9,7 +9,9 @@ int main() {
 
     printf("bitmap: %s\n", bitmap_print(bitmap));
 
-    return 0;
+    char * giant_integer = "1234567899999";
+    int len = 13;
+    printf("bitmap after converting giant integer: %s\n", bitmap_print(GI_to_bitmap(giant_integer, len)));
 
     bitmap_set_bit_at(bitmap, 0);
     bitmap_set_bit_at(bitmap, 3);

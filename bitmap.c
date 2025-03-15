@@ -301,6 +301,51 @@ void bitmap_reverse(bitmap_t *bitmap, uint16_t count) {
     }
 }
 
+bool decimal_char_array_to_binary(char * giant_integer, uint16_t number_of_digits, bool * not_finished) {
+
+    /*
+        when we have 
+        6 * 2
+        actuall we multiply 6 by 2
+        while multiplying, we will got result 12
+        we will put 2 as first digit (from right)
+        and 1 as carry
+        now lets say we have big decimal number represented in big char array
+        we need to reverse the operation
+        divide by 2, in case it result to odd number, meaning we have carry
+        and we need to propgate it to digits to the right
+    */
+
+    int i = 0;
+    while(i < number_of_digits && giant_integer[i] == '0')i++;
+
+    bool carry = 0;
+    for(;i<number_of_digits;i++) {
+        int d = giant_integer[i] - '0'; 
+        int digit = carry*10 + d;
+        giant_integer[i] = '0' + digit/2;
+        *not_finished|=giant_integer[i]>='1';
+        carry = digit&1;
+    }
+    return carry;
+}
+
 bitmap_t * GI_to_bitmap(char * giant_integer, uint16_t number_of_digits) {
-    return NULL;
+    bitmap_t * b = malloc(sizeof(bitmap_t));
+    bitmap_init(b, 32);
+
+    bool not_finished = false;
+    int index = 0;
+    char * actual_string = strdup(giant_integer);
+    while(1) {
+        not_finished = false;
+        bool carry = decimal_char_array_to_binary(actual_string, number_of_digits, &not_finished);
+        if(carry)bitmap_set_bit_at(b, index);
+        index++;
+        if(!not_finished)break;
+    }
+
+    bitmap_reverse(b, b->tsize);
+
+    return b;
 }
